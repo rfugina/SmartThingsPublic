@@ -18,6 +18,7 @@
 
 metadata {
 	definition (name: "Z-Wave Door/Window Sensor", namespace: "smartthings", author: "SmartThings") {
+		capability "Smoke Detector"
 		capability "Contact Sensor"
 		capability "Sensor"
 		capability "Battery"
@@ -39,12 +40,12 @@ metadata {
 	}
 
 	// UI tile definitions
-	tiles {
-		standardTile("contact", "device.contact", width: 2, height: 2) {
-			state "open", label: '${name}', icon: "st.contact.contact.open", backgroundColor: "#ffa81e"
-			state "closed", label: '${name}', icon: "st.contact.contact.closed", backgroundColor: "#79b821"
+	tiles (scale: 2) {
+		standardTile("contact", "device.contact", width: 6, height: 4) {
+			state "open", label: "SMOKE/CO!!", icon: "st.alarm.smoke.smoke", backgroundColor: "#e70000"
+			state "closed", label: "clear", icon: "st.alarm.smoke.clear", backgroundColor: "#ffffff"
 		}
-		valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat") {
+		valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat", width: 2, height: 1) {
 			state "battery", label:'${currentValue}% battery', unit:""
 		}
 
@@ -102,9 +103,9 @@ def configure() {
 
 def sensorValueEvent(value) {
 	if (value) {
-		createEvent(name: "contact", value: "open", descriptionText: "$device.displayName is open")
+		createEvent(name: "contact", value: "open", descriptionText: "$device.displayName is detecting SMOKE!!")
 	} else {
-		createEvent(name: "contact", value: "closed", descriptionText: "$device.displayName is closed")
+		createEvent(name: "contact", value: "closed", descriptionText: "$device.displayName is clear")
 	}
 }
 
